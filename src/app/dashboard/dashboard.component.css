@@ -1,0 +1,96 @@
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f8f9fa;
+}
+
+.card {
+  object-fit: cover;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff; /* Text color */
+}
+
+.carousel-caption h5 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #f8d200;
+}
+
+.carousel-caption p {
+  color: #56c401;
+  font-size: 1.5rem;
+  margin-bottom: 0px;
+}
+
+.btn-learn-more {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  background-color: #f8d200; /* Button color */
+  color: #000; /* Button text color */
+  border-radius: 5px;
+}
+.container {
+  padding: 30px 15px;
+}
+
+.category-card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.category-link {
+  text-decoration: none;
+  color: #212529;
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-title {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.jumbotron {
+  background-image: url("https://m.media-amazon.com/images/S/al-eu-726f4d26-7fdb/927e303d-4ce5-4c9a-85cc-ed207442bcc1._CR0%2C0%2C3000%2C600_SX1920_.png");
+  background-size: contain;
+  color: white;
+  text-align: center;
+  background-repeat: no-repeat;
+}
+.book {
+  text-align: center;
+  padding: 20px;
+}
+.book img {
+  max-width: 100%;
+  height: 19rem;
+  object-fit: cover;
+}

@@ -1,0 +1,123 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/Info', curBookId]"
+      >Book Info</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/ActiveUser', curBookId]"
+      >Active User</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/History', curBookId]"
+      >Book History</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/Delete', curBookId]"
+      >Delete</a
+    >
+  </li>
+</ul>
+<div class="container mt-5">
+  <h2>Active Users</h2>
+  <div id="liveAlertPlaceholder" class="mx-auto mt-3"></div>
+  <div class="form-container" [ngClass]="{ transparent: spinnerVisible }">
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex row align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="usersHistory && usersHistory.length > 0">
+      <div class="row mt-4">
+        <div class="col-12">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User Name</th>
+                <th>Issued Date</th>
+                <th>Estimated Return Date</th>
+                <th>Days Remaining</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let history of usersHistory; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  {{ history.user.firstName }} {{ history.user.lastName }}
+                </td>
+                <td>{{ history.issueDate | date }}</td>
+                <td>
+                  {{
+                    getEstimateReturnDate(
+                      history.days,
+                      history.issueDate.toString()
+                    ) | date
+                  }}
+                </td>
+                <td>
+                  {{
+                    calculateDaysRemaining(
+                      getEstimateReturnDate(
+                        history.days,
+                        history.issueDate.toString()
+                      )
+                    )
+                  }}
+                  &nbsp;&nbsp;<span
+                    *ngIf="
+                      calculateDaysRemaining(
+                        getEstimateReturnDate(
+                          history.days,
+                          history.issueDate.toString()
+                        )
+                      ) < 0
+                    "
+                    class="badge text-bg-danger"
+                    >Late</span
+                  >
+                </td>
+
+                <td>
+                  <button
+                    class="btn btn-outline-primary"
+                    (click)="sendReminder(history.userId, history.bookId)"
+                  >
+                    Send Reminder
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="usersHistory && usersHistory.length === 0">
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="custom-box">
+            <h2>No active users for the current book.</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

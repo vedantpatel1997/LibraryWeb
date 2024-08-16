@@ -1,0 +1,102 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/Info', curUserId]"
+      >User Info</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/ActiveBooks', curUserId]"
+      >Current Rentals</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/History', curUserId]"
+      >Books Submission History</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/SendDetails', curUserId]"
+      >Actions</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/Delete', curUserId]"
+      >Delete</a
+    >
+  </li>
+</ul>
+
+<div class="container mt-5">
+  <h2>Books History</h2>
+
+  <div id="liveAlertPlaceholder" class="mx-auto mt-3"></div>
+  <div class="form-container" [ngClass]="{ transparent: spinnerVisible }">
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex row align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="booksHistory.length == 0 && !spinnerVisible" class="row mt-4">
+      <div class="col-12">
+        <div class="custom-box">
+          <h2>User does't have any history for submitted books</h2>
+        </div>
+      </div>
+    </div>
+    <table *ngIf="booksHistory.length > 0" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Book Title</th>
+          <th>Issue For Days</th>
+          <th>Issue Date</th>
+          <th>Return Date</th>
+          <th>Submit On Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let history of booksHistory; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ history.bookTitle }}</td>
+          <td>{{ history.days }}</td>
+          <td>{{ history.issueDate | date }}</td>
+          <td>{{ history.returnDate | date }}</td>
+          <td
+            [ngClass]="{
+              'text-danger': submitLate(
+                history.returnDate,
+                history.issueDate,
+                history.days
+              )
+            }"
+          >
+            {{
+              calculateSubmitOnTime(
+                history.returnDate,
+                history.issueDate,
+                history.days
+              )
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

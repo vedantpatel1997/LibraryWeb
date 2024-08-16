@@ -1,0 +1,66 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/Info', id]"
+      >User Info</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/ActiveBooks', id]"
+      >Current Rentals</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/History', id]"
+      >Books Submission History</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/SendDetails', id]"
+      >Actions</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Users/Delete', id]"
+      >Delete</a
+    >
+  </li>
+</ul>
+<div class="container">
+  <h2 class="mt-5 mb-4">Delete User Account</h2>
+
+  <div id="liveAlertPlaceholder" class="mx-auto mt-3"></div>
+  <div class="form-container" [ngClass]="{ transparent: spinnerVisible }">
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex row align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div id="confirmation-box" class="confirmation-box">
+      <p>
+        Are you sure you want to delete user account? This action cannot be
+        undone.
+      </p>
+    </div>
+
+    <button class="btn btn-danger" (click)="DeleteUser()">
+      Delete Account
+    </button>
+  </div>
+</div>

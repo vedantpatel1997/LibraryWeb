@@ -1,0 +1,126 @@
+<div
+  id="carouselExampleAutoplaying"
+  class="carousel slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="5000">
+      <img
+        src="assets/Logo/library Animation.gif"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="4000">
+      <img
+        src="https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/a/AmazonStores/A21TJRUUN4KGV/800fbd10e728ed4f84112744b9ece9a1.w3000.h600._CR0%2C0%2C3000%2C600_SX1920_.png"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="4000">
+      <img
+        src="https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/4/AmazonStores/A21TJRUUN4KGV/912a3cbb16b1ef70c2cafc9a117ecb19.w3000.h600._CR0%2C0%2C3000%2C600_SX1920_.png"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item" data-bs-interval="4000">
+      <img
+        src="https://cornellpress.files.wordpress.com/2018/01/6361629-francis-bacon-quote-knowledge-is-power.jpg"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleAutoplaying"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleAutoplaying"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="container">
+  <!-- Book Cards -->
+  <div class="row mt-5">
+    <!-- Book 1 -->
+    <div class="row" *ngIf="!error && categories?.length > 0">
+      <h2 class="text-center pb-4 text-uppercase">
+        Search Books based on the these variety of categories
+      </h2>
+      <ng-container *ngFor="let category of categories">
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="card book category-card">
+            <a routerLink="/Books" [queryParams]="{ filter: category.name }">
+              <img
+                src="{{ category.imageURL }}"
+                class="card-img-top"
+                alt="{{ category.name }}"
+              />
+            </a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center text-lg-start bg-body-tertiary text-muted">
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3"></i>Library Store
+          </h6>
+          <p>
+            "Discover a world of knowledge at our library book store. Explore
+            diverse genres, find hidden gems, and embark on literary
+            adventures."
+          </p>
+        </div>
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-3"></i> Waterloo, ON, Canada</p>
+          <p>
+            <i class="fas fa-envelope me-3"></i>
+            vedantp9@gmail.com
+          </p>
+          <p><i class="fas fa-phone me-3"></i> +1 647 627 4235</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
+    © 2023 Copyright:
+    <a class="text-reset fw-bold" routerLink="/Home"
+      >Library Management System</a
+    >
+  </div>
+  <!-- Copyright -->
+</footer>

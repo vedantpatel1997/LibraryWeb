@@ -1,0 +1,89 @@
+<!-- dashboard.component.html -->
+
+<div class="container mt-4 pb-3">
+  <div class="jumbotron">
+    <h1 class="display-4">
+      Welcome, {{ curUserData.firstName }} {{ curUserData.lastName }}!
+    </h1>
+    <p class="lead">
+      This is your dashboard, where you have the power to manage and oversee the
+      entire system. From users to books, here's a breakdown of what you can do:
+    </p>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h2>Users Management</h2>
+      <ul>
+        <li>
+          View All Users: Browse a comprehensive list of all registered users.
+        </li>
+        <li>Edit User Profiles: Update user information or roles as needed.</li>
+        <li>
+          Disable or Delete Users: Deactivate or remove user accounts when
+          necessary.
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-6">
+      <h2>Books Management</h2>
+      <ul>
+        <li>
+          Browse All Books: Explore the entire collection with search, filter,
+          and sort options.
+        </li>
+        <li>
+          Add New Books: Expand the library by adding new books with details
+          like title, author, and genre.
+        </li>
+        <li>
+          Update Book Information: Modify book details to ensure accurate
+          information.
+        </li>
+        <li>
+          Remove Books: Keep the library current by removing books that are no
+          longer part of the collection.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h2>System Analytics</h2>
+      <ul>
+        <li>
+          Monitor System Metrics: Stay informed about system performance, user
+          activity, and book popularity.
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-6">
+      <h2>Account Management</h2>
+      <ul>
+        <li>
+          Update Admin Profile: Keep your own profile up-to-date with any
+          changes.
+        </li>
+        <li>
+          Logout: Always remember to log out when your admin tasks are complete
+          to maintain system security.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <h2>Need Help?</h2>
+    <ul>
+      <li>
+        If you have questions or encounter issues, refer to the documentation
+        for detailed instructions.
+      </li>
+      <li>For urgent matters, contact our support team.</li>
+    </ul>
+    <p>Thank you for your dedication to maintaining our system!</p>
+  </div>
+</div>

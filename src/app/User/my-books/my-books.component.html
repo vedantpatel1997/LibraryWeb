@@ -1,0 +1,146 @@
+<h2 class="my-4">Your Book Rentals</h2>
+<div>
+  <div id="liveAlertPlaceholder"></div>
+  <div class="form-container row" [ngClass]="{ transparent: spinnerVisible }">
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myBooks.length == 0" class="row mt-4">
+      <div class="col-12">
+        <div class="custom-box">
+          <h2>You don't have any rented book</h2>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="myBooks.length !== 0" class="col-8 pe-3">
+      <div class="rounded p-3 border">
+        <div class="cart-item">
+          <!-- Item List -->
+          <div *ngFor="let cur of myBooks">
+            <div
+              class="cart-item-container border rounded p-3 mb-3 position-relative"
+            >
+              <div class="row">
+                <div class="col-2">
+                  <img
+                    class="img-fluid"
+                    src="{{ cur.book.imageURL }}"
+                    alt="{{ cur.book.title }}"
+                  />
+                </div>
+                <div class="col-6">
+                  <h4>
+                    {{ cur.book?.title }}
+                    <h6>({{ cur.book?.category?.name }})</h6>
+                  </h4>
+                  <p>
+                    {{ cur.book?.author }}
+                  </p>
+
+                  <p>
+                    <strong>Issued On: </strong
+                    >{{ cur.issueDate ? formatDate(cur.issueDate) : 0 }} for
+                    <strong>{{ cur.days }} </strong>
+                    Days
+                  </p>
+
+                  <!-- <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    (click)="submitBook(cur.bookId)"
+                  >
+                    Submit Book
+                  </button> -->
+                </div>
+                <div class="col-3">
+                  <div>
+                    <strong>Estimated Return Date:</strong>
+                    <p>
+                      {{
+                        cur.issueDate
+                          ? formatDate(
+                              getEstimateReturnDate(cur.days, cur.issueDate)
+                            )
+                          : 0
+                      }}
+                    </p>
+                  </div>
+                  <div>
+                    <strong>Days Remaining</strong>
+                    <h3
+                      class="fw-bold"
+                      [ngClass]="{
+                        'text-danger': cur.issueDate
+                          ? calculateDaysRemaining(
+                              getEstimateReturnDate(cur.days, cur.issueDate)
+                            ) < 0
+                          : false
+                      }"
+                    >
+                      {{
+                        cur.issueDate
+                          ? calculateDaysRemaining(
+                              getEstimateReturnDate(cur.days, cur.issueDate)
+                            )
+                          : 0
+                      }}
+                    </h3>
+                  </div>
+                  <div
+                    *ngIf="
+                      cur.issueDate
+                        ? calculateDaysRemaining(
+                            getEstimateReturnDate(cur.days, cur.issueDate)
+                          ) < 0
+                        : false
+                    "
+                    class="alert alert-danger"
+                    role="alert"
+                  >
+                    <i
+                      class="fa-solid fa-triangle-exclamation fa-lg"
+                      style="color: #ed0c0c"
+                    ></i
+                    >&nbsp; Penalty Applied
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="alert alert-info mt-3" role="alert">
+          <div class="m-">
+            <h4>Book Submission Information:</h4>
+            <p>To submit a physical book, please visit our library.</p>
+            <ul>
+              <li>
+                Library Location: 300 Regina Street North, Waterloo - N2J 4H2
+              </li>
+              <li>Submission Hours: 8 AM - 5 PM (Reception Desk)</li>
+            </ul>
+            <p>
+              <strong>Late Submission Penalty:</strong> A late penalty of $1
+              plus tax will be applied for each day a submission is overdue.
+            </p>
+            <p>Contact for Assistance:</p>
+            <ul>
+              <li>
+                Vedant Patel &nbsp;|&nbsp;<i class="fas fa-envelope"></i>
+                vedantp9@gmail.com &nbsp;|&nbsp;<i class="fas fa-phone"></i> +1
+                647 627 4235
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

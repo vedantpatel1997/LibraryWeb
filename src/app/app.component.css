@@ -1,0 +1,31 @@
+.nav-link {
+  cursor: pointer;
+}
+.active {
+  font-weight: 550;
+}
+@media print {
+  /* Set the scale to 65% for printing */
+  body {
+    transform: scale(0.65);
+    transform-origin: top left;
+  }
+
+  /* Hide all elements except the ones with class 'printarea' */
+  body *:not(.printarea) {
+    display: none;
+  }
+
+  .no-print {
+    display: none; /* or any other style to hide the navigation bar */
+  }
+  /* Display the print area with additional styles */
+  .printarea {
+    /* Add any styles you want for the print area */
+    /* For example, you can set a specific width or height */
+    width: 100%;
+    height: auto;
+    margin: 0 auto; /* Center the content horizontally */
+    padding: 20px; /* Add padding if needed */
+  }
+}

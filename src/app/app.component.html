@@ -1,0 +1,198 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light mb-5 no-print bg-body-tertiary sticky-top"
+>
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <a class="" [routerLink]="['Home']">
+        <img
+          src="assets/Logo/logo-transparent-svg.svg"
+          alt="Bootstrap"
+          width="50"
+          height="auto"
+        />
+      </a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            *ngIf="!userInfo.isAdmin && !userInfo.isOwner"
+            [routerLink]="['Home']"
+            routerLinkActive="active"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            *ngIf="!userInfo.isAdmin && !userInfo.isOwner"
+            [routerLink]="['Books']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Books</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            *ngIf="userInfo.isLoggedin && userInfo.isUser"
+            routerLinkActive="active"
+            [routerLink]="['Books', 'MyBooks']"
+            >Your Rentals</a
+          >
+        </li>
+
+        <li class="nav-item" *ngIf="userInfo.isAdmin || userInfo.isOwner">
+          <a
+            class="nav-link"
+            [routerLink]="['Admin', 'Dashboard']"
+            routerLinkActive="active"
+            >Dashboard</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isAdmin || userInfo.isOwner">
+          <a
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLink]="['Admin', 'Users']"
+            >Users</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isAdmin || userInfo.isOwner">
+          <a
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLink]="['Admin', 'Books']"
+            >Books</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isAdmin || userInfo.isOwner">
+          <a
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLink]="['Admin', 'AddBook']"
+            >Add Book</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isAdmin || userInfo.isOwner">
+          <a
+            routerLinkActive="active"
+            class="nav-link"
+            [routerLink]="['Admin', 'DueBooks']"
+          >
+            Due Books</a
+          >
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li *ngIf="userInfo.isAdmin">
+          <span class="nav-link">Welcome Admin</span>
+        </li>
+        <li *ngIf="userInfo.isOwner">
+          <span class="nav-link">Welcome Owner</span>
+        </li>
+        <li class="nav-item dropdown-center" *ngIf="userInfo.isLoggedin">
+          <a
+            routerLinkActive="active"
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa-regular fa-user fa-lg"></i>
+            {{ curUser?.firstName }}
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                class="dropdown-item"
+                routerLinkActive="active"
+                [routerLink]="['Books', 'User', 'Info']"
+                >User Info</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['Books', 'User', 'Address']"
+                routerLinkActive="active"
+                >Add / Update Address</a
+              >
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['Books', 'User', 'History']"
+                routerLinkActive="active"
+                >Books History</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['Books', 'User', 'BillingInfo']"
+                routerLinkActive="active"
+                >Your Invoices</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="['Books', 'User', 'Password']"
+                routerLinkActive="active"
+                >Change Password</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isLoggedin && userInfo.isUser">
+          <a
+            class="nav-link"
+            [routerLink]="['Books', 'Cart']"
+            routerLinkActive="active"
+            >Cart</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="!userInfo.isLoggedin">
+          <a
+            class="nav-link"
+            [routerLink]="['login']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Log In</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="!userInfo.isLoggedin">
+          <a
+            class="nav-link"
+            [routerLink]="['login', 'registerUser']"
+            routerLinkActive="active"
+            >Register</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="userInfo.isLoggedin">
+          <a class="nav-link" (click)="logOut()" routerLinkActive="active"
+            >Log out</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

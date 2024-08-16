@@ -1,0 +1,237 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/Info', curBookId]"
+      >Book Info</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/ActiveUser', curBookId]"
+      >Active User</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/History', curBookId]"
+      >Book History</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLink]="['/Admin/Books/Delete', curBookId]"
+      >Delete</a
+    >
+  </li>
+</ul>
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Book Information</h2>
+    <button
+      class="btn btn-outline-secondary"
+      *ngIf="!updateFrom"
+      (click)="enableUpdate()"
+    >
+      Update Details
+    </button>
+  </div>
+
+  <div id="liveAlertPlaceholder" class="mt-3"></div>
+  <div class="form-container" [ngClass]="{ transparent: spinnerVisible }">
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <form
+      (ngSubmit)="save()"
+      class="row g-3 mt-3"
+      [formGroup]="bookForm"
+      #form="ngForm"
+    >
+      <div class="row col-md-3">
+        <div
+          class="image-preview"
+          [style.background-image]="
+            'url(' + bookForm.controls['imageURL'].value + ')'
+          "
+        ></div>
+      </div>
+      <div class="row col-md-9">
+        <div class="">
+          <label for="title" class="form-label">Title</label>
+          <input
+            formControlName="title"
+            type="text"
+            class="form-control"
+            id="title"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['title'].hasError('required') &&
+              bookForm.controls['title'].touched
+            "
+          >
+            Please Enter Title
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['title'].hasError('minlength') &&
+              bookForm.controls['title'].touched
+            "
+          >
+            Please Enter at least 3 characters
+          </div>
+        </div>
+        <div class="">
+          <label for="lastName" class="form-label">Image</label>
+          <input
+            formControlName="imageURL"
+            type="text"
+            class="form-control"
+            id="author"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['imageURL'].hasError('required') &&
+              bookForm.controls['imageURL'].touched
+            "
+          >
+            Please enter imageURL
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['imageURL'].hasError('minlength') &&
+              bookForm.controls['imageURL'].touched
+            "
+          >
+            Please enter at least 3 characters
+          </div>
+        </div>
+        <div class="">
+          <label for="lastName" class="form-label">Author</label>
+          <input
+            formControlName="author"
+            type="text"
+            class="form-control"
+            id="author"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['author'].hasError('required') &&
+              bookForm.controls['author'].touched
+            "
+          >
+            Please enter author name
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              bookForm.controls['author'].hasError('minlength') &&
+              bookForm.controls['author'].touched
+            "
+          >
+            Please enter at least 3 characters
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="price" class="form-label">Price</label>
+        <input
+          formControlName="price"
+          type="number"
+          class="form-control"
+          id="price"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            bookForm.controls['price'].hasError('required') &&
+            bookForm.controls['price'].touched
+          "
+        >
+          Price is required
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="totalQuantity" class="form-label">Total Quantity</label>
+        <input
+          formControlName="totalQuantity"
+          type="number"
+          class="form-control"
+          id="totalQuantity"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            bookForm.controls['totalQuantity'].hasError('required') &&
+            bookForm.controls['totalQuantity'].touched
+          "
+        >
+          Total quantity is required
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="category" class="form-label">Category</label>
+        <select formControlName="category" class="form-select" id="category">
+          <option value="">Select Category</option>
+          <option
+            *ngFor="let category of categoryData"
+            [value]="category.categoryId"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+
+        <div
+          class="text-danger"
+          *ngIf="
+            bookForm.controls['category'].hasError('required') &&
+            bookForm.controls['category'].touched
+          "
+        >
+          Category is required
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <button
+          class="btn btn-outline-primary m-2"
+          [disabled]="!bookForm.valid"
+          type="submit"
+          *ngIf="updateFrom"
+        >
+          Update
+        </button>
+        <button
+          class="btn btn-outline-secondary m-2"
+          *ngIf="updateFrom"
+          (click)="disableUpdate()"
+        >
+          Cancel
+        </button>
+      </div>
+
+      <p *ngIf="updateFrom && !bookForm.valid" class="text-center">
+        Please Fill All Abobe fields to submit
+      </p>
+    </form>
+  </div>
+</div>

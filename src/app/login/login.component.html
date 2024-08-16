@@ -1,0 +1,83 @@
+<div class="container">
+  <div id="liveAlertPlaceholder" class="col-md-5 mx-auto mt-3"></div>
+  <div
+    class="col-md-5 row mx-auto form-container"
+    [ngClass]="{ transparent: spinnerVisible }"
+  >
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex row align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <form (ngSubmit)="save()" [formGroup]="loginForm" #form="ngForm">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label"
+          >Username or Email</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          aria-describedby="emailHelp"
+          formControlName="emailOrUsername"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            loginForm.controls['emailOrUsername'].errors &&
+            (form.submitted || loginForm.controls['emailOrUsername'].touched)
+          "
+        >
+          <span
+            [hidden]="!loginForm.controls['emailOrUsername'].errors['required']"
+          >
+            Enter Username or Email</span
+          >
+          <span
+            [hidden]="
+              !loginForm.controls['emailOrUsername'].errors['minlength']
+            "
+          >
+            Please Enter at least 3 char</span
+          >
+        </div>
+        <div id="emailHelp" class="form-text">
+          We'll never share your email with anyone else.
+        </div>
+      </div>
+      <div>
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          formControlName="password"
+        />
+      </div>
+      <div
+        class="text-danger"
+        *ngIf="
+          loginForm.controls['password'].errors &&
+          (form.submitted || loginForm.controls['password'].touched)
+        "
+      >
+        <span [hidden]="!loginForm.controls['password'].errors['required']">
+          Enter Password</span
+        >
+        <span [hidden]="!loginForm.controls['password'].errors['minlength']">
+          Please Enter at least 3 char</span
+        >
+      </div>
+
+      <button
+        class="btn btn-primary mt-3"
+        type="submit"
+        [disabled]="!loginForm.valid"
+      >
+        Login</button
+      >&nbsp;&nbsp;
+      <a [routerLink]="['registerUser']">Register New User</a>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" routerLinkActive="active" routerLink="/Books/User/Info"
+      >User Info</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/Books/User/Address"
+      >Address</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/Books/User/History"
+      >Book History</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/Books/User/BillingInfo"
+      >Your Invoices</a
+    >
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/Books/User/Password"
+      >Password</a
+    >
+  </li>
+</ul>
+<div class="container mt-5">
+  <h2>Your Bills</h2>
+  <div id="liveAlertPlaceholder" class="mt-3"></div>
+  <div class="spinner-container" *ngIf="spinnerVisible">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="billingDetails.length == 0 && !spinnerVisible" class="row mt-4">
+    <div class="col-12">
+      <div class="custom-box">
+        <h2>You don't have any bills</h2>
+      </div>
+    </div>
+  </div>
+  <table *ngIf="billingDetails.length > 0" class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Bill Number</th>
+        <th>Billing Date</th>
+        <th>Books Quantity</th>
+        <th>Total Amount</th>
+        <th>View Bill</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bill of billingDetails; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ formatBillNumber(bill.billingId) }}</td>
+        <td>{{ bill.date | date }}</td>
+        <td>{{ bill.bookQuantity }}</td>
+        <td>{{ bill.totalAmount | currency }}</td>
+        <td>
+          <button
+            class="btn-outline-primary btn-sm btn"
+            (click)="viewBill(bill.billingId)"
+          >
+            View Bill
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

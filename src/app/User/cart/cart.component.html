@@ -1,0 +1,218 @@
+<div class="container">
+  <h2 class="my-4">Your Shopping Cart</h2>
+  <div id="liveAlertPlaceholder1"></div>
+
+  <div
+    class="form-container row col-sm-12"
+    [ngClass]="{ transparent: spinnerVisible }"
+  >
+    <div class="spinner-container" *ngIf="spinnerVisible">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="cartItems.length == 0" class="row mt-4">
+        <div class="col-12">
+          <div class="custom-box">
+            <h2>You don't have any items in the cart</h2>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="cartItems.length > 0" class="row">
+        <!-- Left Section (Item Details) -->
+        <div class="col-7 mb-4 pe-3">
+          <div class="rounded p-3 border">
+            <h2 class="mb-4">Cart Items</h2>
+            <div class="cart-item">
+              <div id="liveAlertPlaceholder"></div>
+              <!-- Item List -->
+              <div
+                class="cart-item-container border rounded p-3 mb-3 position-relative"
+                *ngFor="let book of cartItems"
+              >
+                <button
+                  class="btn btn-danger position-absolute top-0 end-0 m-2"
+                  (click)="removeFromCart(book.bookId)"
+                >
+                  X
+                </button>
+                <div class="row">
+                  <div class="col-2">
+                    <img
+                      class="img-fluid"
+                      src="{{ book.imageURL }}"
+                      alt="{{ book.title }}"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <h4>{{ book.title }}</h4>
+                    <p>{{ book.author }}</p>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="rentPeriod">Select Rent Period:</label>
+                      </div>
+                      <div class="col-6">
+                        <select
+                          id="rentPeriod"
+                          class="form-select"
+                          [(ngModel)]="book.rentPeriod"
+                          (change)="onRentDaysChage()"
+                        >
+                          <option value="5">5 days</option>
+                          <option value="10">10 days</option>
+                          <option value="20">20 days</option>
+                          <option value="30">30 days</option>
+                          <option value="45">45 days</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-3">
+                    <!-- <p><strong>Price:</strong> ${{ book.price }}</p> -->
+                    <p>
+                      <strong>Estimated Rent Price: </strong>
+                      {{ book.totalRentPrice | currency }}
+                    </p>
+                    <div>
+                      <strong>Return Date: </strong>
+                      <p>{{ getReturnDate(book.rentPeriod) }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Section (Billing Information) -->
+        <div class="col-4 ps-3">
+          <form [formGroup]="chekoutForm" (ngSubmit)="save()">
+            <div class="rounded p-3 border">
+              <h2 class="mb-4">Billing Information</h2>
+              <div class="billing-options mb-4">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="delivery"
+                    id="homeDelivery"
+                    value="home"
+                    (change)="onDeliveryOptionChange()"
+                  />
+                  <label class="form-check-label" for="homeDelivery">
+                    Home Delivery
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="delivery"
+                    id="pickup"
+                    value="pickup"
+                    (change)="onDeliveryOptionChange()"
+                  />
+                  <label class="form-check-label" for="pickup"> Pickup </label>
+                </div>
+              </div>
+              <div class="billing-summary">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Total Qty:</span>
+                  <span>{{ billingInfo.quantity }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Total Amount:</span>
+                  <span>{{ billingInfo.totalBookAmount | currency }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Delivery Fee:</span>
+                  <span>{{ billingInfo.deliveryFee | currency }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Tax:</span>
+                  <span>{{ billingInfo.tax | currency }}</span>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                  <strong>Final Amount:</strong>
+                  <strong>{{ billingInfo.finalAmount | currency }}</strong>
+                </div>
+                <div class="d-grid gap-2 col-12 mx-auto mt-3">
+                  <button
+                    class="btn btn-outline-primary"
+                    type="submit"
+                    [disabled]="!chekoutForm.valid"
+                  >
+                    Checkout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delivery Information -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <div>
+        <h4>Rent Calculation:</h4>
+        <ul>
+          <li>
+            The rental fee is calculated based on the book's price plus a
+            percentage of the price determined by the rental period.
+          </li>
+          <li>
+            The formula is:
+            <strong>Book Price + (Rent Period / 100) * Book Price</strong>.
+          </li>
+          <li>
+            This ensures a fair and flexible pricing structure that takes into
+            account both the base cost of the book and the duration of the
+            rental.
+          </li>
+        </ul>
+      </div>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <div>
+        <h4>Delivery Information:</h4>
+        <p>Standard Delivery:</p>
+        <ul>
+          <li>Estimated delivery time: 2-4 working business days.</li>
+        </ul>
+        <p>Please note:</p>
+        <ul>
+          <li>
+            Any orders placed after 10 pm on Friday and over the weekend will
+            not be dispatched until Monday.
+          </li>
+          <li>Excluding public holidays.</li>
+        </ul>
+        <p>PickUp Location:</p>
+        <ul>
+          <li>300 Regina Street North, Waterloo - N2J 4H2</li>
+          <li>Timings: 8 AM - 5 PM (Reception Desk)</li>
+          <li>
+            Vedant Patel &nbsp;|&nbsp;<i class="fas fa-envelope"></i>
+            vedantp9@gmail.com &nbsp;|&nbsp;<i class="fas fa-phone"></i> +1 647
+            627 4235
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
