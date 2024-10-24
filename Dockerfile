@@ -40,5 +40,8 @@ RUN apk add openssh \
 # Expose port 80 for HTTP traffic and port 2222 for SSH access
 EXPOSE 80 2222
 
+# # Command to start the SSH service and run NGINX in the foreground
+# CMD /usr/sbin/sshd && exec nginx -g 'daemon off;'
+
 # Command to start the SSH service and run NGINX in the foreground
-CMD /usr/sbin/sshd && exec nginx -g 'daemon off;'
+CMD ["/bin/sh", "-c", "/usr/sbin/sshd && exec nginx -g 'daemon off;'"]
