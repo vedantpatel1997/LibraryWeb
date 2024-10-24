@@ -1,4 +1,4 @@
- name: Build docker image, push to ACR and deploy to linux web app
+ name: Build docker image, push to ACR 
 
  on:
    push:
@@ -30,5 +30,7 @@
          with:
            context: .
            push: true
-           tags: libraryacr.azurecr.io/library_web:${{ github.sha }}
+           tags: 
+            libraryacr.azurecr.io/library_web:latest
+            libraryacr.azurecr.io/library_web:${{ env.DATE_TAG }} # Date tag
            file: ./Dockerfile
