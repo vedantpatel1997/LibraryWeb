@@ -31,6 +31,6 @@
            context: .
            push: true
            tags: 
-            libraryacr.azurecr.io/library_web:latest
+            libraryacr.azurecr.io/library_web:latest,
             libraryacr.azurecr.io/library_web:${{ env.DATE_TAG }} # Date tag
            file: ./Dockerfile
