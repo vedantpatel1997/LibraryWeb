@@ -34,7 +34,6 @@ COPY sshd_config /etc/ssh/
 # Install OpenSSH server, set root password, and generate SSH host keys
 RUN apk add openssh \
     && echo "root:Docker!" | chpasswd \
-    && chmod +x ./entrypoint.sh \
     && cd /etc/ssh/ \
     && ssh-keygen -A
 
