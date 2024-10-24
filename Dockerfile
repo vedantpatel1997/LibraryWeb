@@ -30,10 +30,12 @@ COPY --from=build /app/dist/library-management.web /usr/share/nginx/html
 
 # Copy SSH configuration files to enable secure shell access to the container
 COPY sshd_config /etc/ssh/
+COPY entrypoint.sh ./
 
 # Install OpenSSH server, set root password, and generate SSH host keys
 RUN apk add openssh \
     && echo "root:Docker!" | chpasswd \
+    && chmod +x ./entrypoint.sh \
     && cd /etc/ssh/ \
     && ssh-keygen -A
 
@@ -44,4 +46,5 @@ EXPOSE 80 2222
 # CMD /usr/sbin/sshd && exec nginx -g 'daemon off;'
 
 # Command to start the SSH service and run NGINX in the foreground
-CMD ["/bin/sh", "-c", "/usr/sbin/sshd && exec nginx -g 'daemon off;'"]
+ENTRYPOINT [ "./entrypoint.sh" ]
+#CMD ["/bin/sh", "-c", "/usr/sbin/sshd && exec nginx -g 'daemon off;'"]
