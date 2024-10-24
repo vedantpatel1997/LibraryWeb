@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_812e2f43a4f14df4ba15b6a5e8b0f44c }}/library_web:${{ github.sha }}
+        tags: libraryacr.azurecr.io/library_web:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'Library-frontend-web'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_bbde10d30b85494bada0abf7ed728428 }}
-        images: 'libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_812e2f43a4f14df4ba15b6a5e8b0f44c }}/library_web:${{ github.sha }}'
+        images: 'libraryacr.azurecr.io/library_web:${{ github.sha }}'
