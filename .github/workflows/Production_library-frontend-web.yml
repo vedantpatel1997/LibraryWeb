@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - library-fronend-web
+name: Build and deploy container app to Azure Web App - library-frontend-web
 
 on:
   push:
@@ -9,15 +9,9 @@ on:
       - Production
   workflow_dispatch:
 
-permissions:
-  id-token: write
-  contents: read
-    
 jobs:
   build:
     runs-on: 'ubuntu-latest'
-    environment:
-      name: 'production'
 
     steps:
     - uses: actions/checkout@v2
@@ -25,41 +19,33 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: 'Login to ACR using UAMI'
-      uses: azure/login@v2
+    - name: Log in to registry
+      uses: docker/login-action@v2
       with:
-         client-id: ${{ secrets.UAMI_CLIENT_ID }}
-         tenant-id: ${{ secrets.UAMI_TENANT_ID }}
-         subscription-id: ${{ secrets.UAMI_SUBSCRIPTION_ID }}
+        registry: https://libraryprod.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_d2e7a068ac7e43c5844a479a25b1ee9a }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_b1f70dc8b2b44f3485cad6cb1e1ca46d }}
 
-    - name: Login to ACR
-      run: |
-        az acr login --name libraryprod
     - name: Build and push container image to registry
-      run: |
-        docker build -t libraryprod.azurecr.io/library-frontend:${{ github.sha }} .
-        docker push libraryprod.azurecr.io/library-frontend:${{ github.sha }}
-    
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: libraryprod.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d2e7a068ac7e43c5844a479a25b1ee9a }}/library-frontend:${{ github.sha }}
+        file: ./Dockerfile
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-  
+
     steps:
-    
-    - name: Login to Azure
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.UAMI_CLIENT_ID }}
-        tenant-id: ${{ secrets.UAMI_TENANT_ID }}
-        subscription-id: ${{ secrets.UAMI_SUBSCRIPTION_ID }}
-          
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
-      uses: azure/webapps-deploy@v3
+      uses: azure/webapps-deploy@v2
       with:
         app-name: 'library-frontend-web'
         slot-name: 'production'
-        images: 'libraryprod.azurecr.io/library-frontend:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_3943a94a544345cbbc51a85222495a27 }}
+        images: 'libraryprod.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d2e7a068ac7e43c5844a479a25b1ee9a }}/library-frontend:${{ github.sha }}'
