@@ -31,7 +31,8 @@ jobs:
 
     - name: Build and push container image to registry
       run: |
-        docker build --cache-from=type=registry,ref=libraryprod.azurecr.io/library-frontend:latest -t libraryprod.azurecr.io/library-frontend:${{ github.sha }} -t libraryprod.azurecr.io/library-frontend:latest .
+        docker build -t libraryprod.azurecr.io/library-frontend:${{ github.sha }} .
+        docker build -t libraryprod.azurecr.io/library-frontend:latest .
         docker push libraryprod.azurecr.io/library-frontend:${{ github.sha }}
         docker push libraryprod.azurecr.io/library-frontend:latest
 
