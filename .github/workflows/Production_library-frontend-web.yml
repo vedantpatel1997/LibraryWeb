@@ -60,6 +60,6 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v3
       with:
-        app-name: 'library-frontend-web'
+        app-name: 'library-fronend-web'
         slot-name: 'production'
         images: 'libraryprod.azurecr.io/library-frontend:${{ github.sha }}'
