@@ -3,7 +3,7 @@ name: Build docker image and deploy to ACR and Azure Web App - library-frontend-
 on:
   push:
     branches:
-      - Production
+      - Production-Internal
   workflow_dispatch:
 
 permissions:
