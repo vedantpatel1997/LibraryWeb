@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   secret: 'Vedant@1997',
-  apiAddress: 'https://libraryconestoga.azurewebsites.net/api/',
+  apiAddress: 'https://library-backend-api.azurewebsites.net/api/',
 };
