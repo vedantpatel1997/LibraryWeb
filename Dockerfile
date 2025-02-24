@@ -22,6 +22,9 @@ RUN npx ng build --configuration=production
 # Step 2: Use a minimal nginx-alpine base image for serving the built Angular app
 FROM nginx:alpine
 
+# Set working directory
+WORKDIR /app
+
 # Use a custom Nginx configuration (optional if you need SPA routing support)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
@@ -30,21 +33,43 @@ COPY --from=build /app/dist/library-management.web /usr/share/nginx/html
 
 # Copy SSH configuration files to enable secure shell access to the container
 COPY sshd_config /etc/ssh/
-COPY entrypoint.sh ./
+COPY entrypoint.sh /entrypoint.sh
 
-# Install OpenSSH server, set root password, and generate SSH host keys
-RUN apk add openssh \
+# Install OpenSSH server and required utilities
+RUN apk add --no-cache \
+    openssh \
+    iputils \
+    net-tools \
+    tcpdump \
+    curl \
+    bind-tools \
+    busybox-extras \
+    tcptraceroute \
+    lsof \
+    procps \
+    htop \
+    vim \
+    tcpflow \
+    nmap \
+    mtr \
+    iperf \
+    && curl -o /usr/bin/tcpping http://www.vdberg.org/~richard/tcpping \
+    && chmod 755 /usr/bin/tcpping \
     && echo "root:Docker!" | chpasswd \
-    && chmod +x ./entrypoint.sh \
-    && cd /etc/ssh/ \
+    && chmod +x /entrypoint.sh \
     && ssh-keygen -A
 
-# Expose port 80 for HTTP traffic and port 2222 for SSH access
-EXPOSE 80 2222
+# Expose port 8080 for HTTP traffic and port 2222 for SSH access
+EXPOSE 8080 2222
 
-# # Command to start the SSH service and run NGINX in the foreground
-# CMD /usr/sbin/sshd && exec nginx -g 'daemon off;'
+# Set the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
 
-# Command to start the SSH service and run NGINX in the foreground
-ENTRYPOINT [ "./entrypoint.sh" ]
-#CMD ["/bin/sh", "-c", "/usr/sbin/sshd && exec nginx -g 'daemon off;'"]
+
+
+# az login
+# az acr login --name libraryacr
+# docker build -t libraryacr.azurecr.io/library:frontend .
+# docker build -t libraryacr.azurecr.io/library:backend .
+# docker push libraryacr.azurecr.io/library:frontend
+# docker push libraryacr.azurecr.io/library:backend

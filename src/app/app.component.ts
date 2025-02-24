@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     isLoggedin: false,
     isOwner: false,
   };
+  databaseIsNew;
   title = 'LibraryManagement.web';
 
   constructor(private route: Router, private loginSvc: LoginService) {}
@@ -37,9 +38,52 @@ export class AppComponent implements OnInit {
         this.userInfo.isOwner = false;
       }
     });
+    // Fetch current database status on init
+    this.checkCurrentDatabase();
   }
 
   logOut() {
     this.loginSvc.logout();
+  }
+
+  switchDatabase(dbToChange: string) {
+    // Make API call to switch the database
+    this.loginSvc.switchDatabase(dbToChange).subscribe({
+      next: (APIResult) => {
+        if (APIResult.isSuccess) {
+          // Update `databaseIsNew` based on the target database
+          this.databaseIsNew = dbToChange === 'new';
+          console.log('Database switched successfully');
+          this.loginSvc.logout();
+        } else {
+          // Keep the current database state if switching fails
+          console.error('Switch database failed:', APIResult.errorMessage);
+        }
+      },
+      error: (error) => {
+        console.error('Error switching database:', error);
+      },
+    });
+  }
+
+  checkCurrentDatabase() {
+    this.loginSvc.getCurrentDatabase().subscribe({
+      next: (APIResult) => {
+        if (APIResult.isSuccess) {
+          this.databaseIsNew = APIResult.data; // Assuming API returns true for 'new' DB
+          console.log(
+            `Current database: ${this.databaseIsNew ? 'new' : 'old'}`
+          );
+        } else {
+          console.error(
+            'Failed to fetch current database:',
+            APIResult.errorMessage
+          );
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching current database:', error);
+      },
+    });
   }
 }

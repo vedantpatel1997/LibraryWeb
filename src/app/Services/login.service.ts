@@ -139,6 +139,25 @@ export class LoginService {
     return false;
   }
 
+  // New API call to switch the database
+  switchDatabase(databaseName: string): Observable<APIResponse> {
+    const requestBody = {
+      dbKey: databaseName, // Ensure the request body matches the backend's expected format
+    };
+
+    return this.http.post<APIResponse>(
+      environment.apiAddress + 'AdvancedQualityDevelopTest/SwitchDatabase', // Your backend endpoint
+      requestBody // Send the correct JSON object
+    );
+  }
+
+  // Get current database status
+  getCurrentDatabase(): Observable<APIResponse> {
+    return this.http.get<APIResponse>(
+      environment.apiAddress + 'AdvancedQualityDevelopTest/GetCurrentDatabase'
+    );
+  }
+
   private encryptData(data: any) {
     const iv = CryptoJS.lib.WordArray.random(16); // 16 bytes IV
     const options = { iv: iv, mode: CryptoJS.mode.CFB }; // Customize the mode as needed
