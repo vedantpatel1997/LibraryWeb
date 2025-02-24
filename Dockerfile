@@ -22,6 +22,9 @@ RUN npx ng build --configuration=production
 # Step 2: Use a minimal nginx-alpine base image for serving the built Angular app
 FROM nginx:alpine
 
+# Set working directory
+WORKDIR /app
+
 # Use a custom Nginx configuration (optional if you need SPA routing support)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
@@ -30,64 +33,38 @@ COPY --from=build /app/dist/library-management.web /usr/share/nginx/html
 
 # Copy SSH configuration files to enable secure shell access to the container
 COPY sshd_config /etc/ssh/
-COPY entrypoint.sh ./
+COPY entrypoint.sh /entrypoint.sh
 
-# Install OpenSSH server, set root password, and generate SSH host keys
-    RUN apk add --no-cache \
-    # SSH server for remote access
+# Install OpenSSH server and required utilities
+RUN apk add --no-cache \
     openssh \
-    # Network utilities (ping, arping, etc.)
     iputils \
-    # Networking tools (netstat, ifconfig, etc.)
     net-tools \
-    # Network packet analyzer
     tcpdump \
-    # Command-line HTTP client
     curl \
-    # DNS tools (dig, nslookup, etc.)
     bind-tools \
-    # Additional utilities (telnet, netcat, etc.)
     busybox-extras \
-    # TCP-based traceroute tool
     tcptraceroute \
-    # List open files and network connections
     lsof \
-    # Process management tools (ps, top, etc.)
     procps \
-    # Interactive process viewer
     htop \
-    # Text editor for editing configuration files
     vim \
-    # Tool for capturing and analyzing TCP flows
     tcpflow \
-    # Network exploration and security auditing tool
     nmap \
-    # Combines ping and traceroute functionality
     mtr \
-    # Network performance testing tool
     iperf \
-    # Install tcpping
-    && cd /usr/bin \
-    && wget http://www.vdberg.org/~richard/tcpping \
-    && chmod 755 tcpping \
-    # Set root password for SSH access
+    && curl -o /usr/bin/tcpping http://www.vdberg.org/~richard/tcpping \
+    && chmod 755 /usr/bin/tcpping \
     && echo "root:Docker!" | chpasswd \
-    && chmod +x ./entrypoint.sh \
-    && cd /etc/ssh/ \
-    # Generate SSH host keys
-    && ssh-keygen -A \
-    # Create directory for SSH daemon
-    && mkdir -p /var/run/sshd
+    && chmod +x /entrypoint.sh \
+    && ssh-keygen -A
 
-# Expose port 80 for HTTP traffic and port 2222 for SSH access
+# Expose port 8080 for HTTP traffic and port 2222 for SSH access
 EXPOSE 8080 2222
 
-# # Command to start the SSH service and run NGINX in the foreground
-# CMD /usr/sbin/sshd && exec nginx -g 'daemon off;'
+# Set the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
 
-# Command to start the SSH service and run NGINX in the foreground
-ENTRYPOINT [ "./entrypoint.sh" ]
-#CMD ["/bin/sh", "-c", "/usr/sbin/sshd && exec nginx -g 'daemon off;'"]
 
 
 # az login
