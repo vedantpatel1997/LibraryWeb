@@ -47,24 +47,37 @@ export class AppComponent implements OnInit {
   }
 
   switchDatabase(dbToChange: string) {
+    const confirmSwitch = confirm(
+      `You are about to switch to the ${dbToChange.toUpperCase()} database. This will log you out and redirect you to the home page. Do you want to continue?`
+    );
+  
+    if (!confirmSwitch) {
+      return;
+    }
+  
     // Make API call to switch the database
     this.loginSvc.switchDatabase(dbToChange).subscribe({
       next: (APIResult) => {
         if (APIResult.isSuccess) {
           // Update `databaseIsNew` based on the target database
           this.databaseIsNew = dbToChange === 'new';
-          console.log('Database switched successfully');
+          alert('Database switched successfully! You will be logged out.');
+          
+          // Logout and redirect
           this.loginSvc.logout();
         } else {
-          // Keep the current database state if switching fails
+          // Show error alert if switching fails
+          alert(`Switch database failed: ${APIResult.errorMessage}`);
           console.error('Switch database failed:', APIResult.errorMessage);
         }
       },
       error: (error) => {
+        alert('Error switching database. Please try again later.');
         console.error('Error switching database:', error);
       },
     });
   }
+  
 
   checkCurrentDatabase() {
     this.loginSvc.getCurrentDatabase().subscribe({
