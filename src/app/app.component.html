@@ -97,20 +97,28 @@
       </ul>
 
       <ul class="navbar-nav ms-auto">
+        <li>
+          <span class="nav-link current-db active">
+            Current Database: <strong>{{ databaseIsNew ? 'NEW' : 'OLD' }}</strong>
+          </span>
+        </li>
         <li *ngIf="databaseIsNew">
           <span
-            class="nav-link highlight-blink"
+            class="nav-link highlight-blink switch-option"
             (click)="switchDatabase('old')"
-            >Switch to OLD DB</span
           >
+            Switch to OLD DB
+          </span>
         </li>
         <li *ngIf="!databaseIsNew">
           <span
-            class="nav-link highlight-blink"
+            class="nav-link highlight-blink switch-option"
             (click)="switchDatabase('new')"
-            >Switch to NEW DB</span
           >
+            Switch to NEW DB
+          </span>
         </li>
+        
         <li *ngIf="userInfo.isAdmin">
           <span class="nav-link">Welcome Admin</span>
         </li>
