@@ -115,14 +115,40 @@
   </section>
   <!-- Section: Links  -->
 
-   <!-- Copyright and Version Info -->
-   <div class="d-flex justify-content-between align-items-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
-    <span>
+  <!-- Copyright and Version Info -->
+  <div
+    class="d-flex justify-content-between align-items-center p-4"
+    style="
+      background-color: rgba(0, 0, 0, 0.05);
+      border-top: 1px solid #ccc;
+      font-size: 14px;
+    "
+  >
+    <!-- Copyright Section -->
+    <span class="text-muted">
       © 2023 Copyright:
-      <a class="text-reset fw-bold" routerLink="/Home">Library Management System</a>
+      <a class="text-reset fw-bold" routerLink="/Home"
+        >Library Management System</a
+      >
     </span>
-    <span class="ms-auto">
-      <a class="text-reset fw-bold" href="https://github.com/vedantpatel1997/LibraryWeb/" target="_blank">Version: {{ appVersion }}</a>
+
+    <!-- Version Section -->
+    <span class="ms-auto d-flex align-items-center">
+      <!-- Frontend Version -->
+      <a
+        class="text-reset fw-bold me-3"
+        href="https://github.com/vedantpatel1997/LibraryWeb/"
+        target="_blank"
+      >
+        Frontend Version: {{ appVersion }}
+      </a>
+
+      <!-- Backend Version -->
+      <span class="text-muted">|</span>
+
+      <a class="text-reset fw-bold ms-3" [href]="apiGitHubRepo" target="_blank">
+        Backend Version: {{ apiVersion }}
+      </a>
     </span>
   </div>
 </footer>

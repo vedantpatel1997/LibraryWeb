@@ -158,6 +158,13 @@ export class LoginService {
     );
   }
 
+  // Fetch API version and GitHub repository
+  getApiVersion(): Observable<{ version: string, gitHubRepo: string }> {
+    return this.http.get<{ version: string, gitHubRepo: string }>(
+      environment.apiAddress + 'AdvancedQualityDevelopTest/apiversion'
+    );
+  }
+
   private encryptData(data: any) {
     const iv = CryptoJS.lib.WordArray.random(16); // 16 bytes IV
     const options = { iv: iv, mode: CryptoJS.mode.CFB }; // Customize the mode as needed
