@@ -4,6 +4,31 @@
 .active {
   font-weight: 550;
 }
+
+.highlight-blink {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  animation: blink 1s infinite alternate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @media print {
   /* Set the scale to 65% for printing */
   body {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../DTO/Category';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../Services/category.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { CategoryService } from '../Services/category.service';
 export class DashboardComponent implements OnInit {
   categories: Category[] = [];
   error: boolean = false;
+  appVersion = environment.appVersion;
 
   constructor(
     private categorySvc: CategoryService,
