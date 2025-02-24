@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     isLoggedin: false,
     isOwner: false,
   };
-  databaseIsNew = true;
+  databaseIsNew;
   title = 'LibraryManagement.web';
 
   constructor(private route: Router, private loginSvc: LoginService) {}
